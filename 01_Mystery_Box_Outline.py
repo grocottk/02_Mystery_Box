@@ -33,7 +33,6 @@ class Start:
         starting_balance = self.start_amount_entry.get()
         Game(self, stakes, starting_balance)
 
-
 # Beginning of Game class
 class Game:
     def __init__(self, partner, stakes, starting_balance):
@@ -42,18 +41,56 @@ class Game:
         print(stakes)
         print(starting_balance)
 
+        # Disable low stakes button
         partner.low_stakes_button.config(state=DISABLED)
 
+        # Initialise variable(s):
+        self.balance = IntVar()
 
-# Test class from template
-class Foo:
-    def __init__(self, parent):
-        print("hello world")
+        # Set starting balance to amount entered by user at the start of the game.
+        self.balance.set(starting_balance)
+
+        # GUI Setup
+        self.game_box = Toplevel()
+        self.game_frame = Frame(self.game_box)
+        self.game_frame.grid()
+
+        # Game Heading (Row 0)
+        self.game_heading_label = Label(self.game_frame, text="Mystery Box Play Area",
+                                       font="Arial 24 bold", padx=10, pady=10)
+        self.game_heading_label.grid(row=0)
+
+        # Balance Frame (Row 1)
+        self.balance_frame = Frame(self.game_frame)
+        self.balance_frame.grid(row=1)
+        
+        # Balance Label (Row 2)
+        self.balance_label = Label(self.game_frame, text="Balance: $_.__")
+        self.balance_label.grid(row=2)
+
+        # Play Button (Row 3)
+        self.play_button = Button(self.game_frame, text="Gain",
+                                    padx=10, pady=10, command=self.reveal_boxes)
+        self.play_button.grid(row=3)
+
+    def reveal_boxes(self):
+        # Retrieve the balance from the initial function:
+        current_balance = self.balance.get()
+
+        # Adjust the balance (subtract the game cost and payout)
+        # [For testing purposes, this adds two (2) to the overall balance.]
+        current_balance += 2
+
+        # Set balance to adjusted balance
+        self.balance.set(current_balance)
+
+        # Edit label so that the user can see their balance
+        self.balance_label.configure(text="Balance: {}".format(current_balance))
 
 
 # main routine
 if __name__ == "__main__":
     root = Tk()
     root.title("Mystery Box")
-    something = Foo(root)
+    something = Start(root)
     root.mainloop()

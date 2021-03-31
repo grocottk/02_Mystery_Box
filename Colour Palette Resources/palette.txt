@@ -1,0 +1,13 @@
+/* Coolors Exported Palette - https://coolors.co/04e762-f5b700-00a1e4-464655-d5cfe1 */
+
+/* CSV */
+04e762,f5b700,00a1e4,464655,d5cfe1
+
+/* Array */
+["04e762","f5b700","00a1e4","464655","d5cfe1"]
+
+/* Object */
+{"Malachite":"04e762","Orange Yellow":"f5b700","Carolina Blue":"00a1e4","Independence":"464655","Languid Lavender":"d5cfe1"}
+
+/* Extended Array */
+[{"name":"Malachite","hex":"04e762","rgb":[4,231,98],"cmyk":[98,0,58,9],"hsb":[145,98,91],"hsl":[145,97,46],"lab":[81,-74,51]},{"name":"Orange Yellow","hex":"f5b700","rgb":[245,183,0],"cmyk":[0,25,100,4],"hsb":[45,100,96],"hsl":[45,100,48],"lab":[78,10,80]},{"name":"Carolina Blue","hex":"00a1e4","rgb":[0,161,228],"cmyk":[100,29,0,11],"hsb":[198,100,89],"hsl":[198,100,45],"lab":[63,-11,-43]},{"name":"Independence","hex":"464655","rgb":[70,70,85],"cmyk":[18,18,0,67],"hsb":[240,18,33],"hsl":[240,10,30],"lab":[30,4,-9]},{"name":"Languid Lavender","hex":"d5cfe1","rgb":[213,207,225],"cmyk":[5,8,0,12],"hsb":[260,8,88],"hsl":[260,23,85],"lab":[84,5,-8]}]
