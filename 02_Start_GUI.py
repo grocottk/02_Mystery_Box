@@ -78,7 +78,12 @@ class Start:
         starting_balance = self.start_amount_entry.get()
         
         # Set error background colours (and assume that there are no errors at the start)
-        error_background=""
+        error_background="#FFCCBB"
+        error_text="#FF5733"
+        has_errors = "no"
+
+        # Change background to white (for testing purposes)
+        self.start_amount_entry.config(bg="#D5CFE1") # Lilac
 
 # Beginning of Game class
 class Game:
