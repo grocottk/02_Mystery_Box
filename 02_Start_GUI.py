@@ -9,6 +9,9 @@ class Start:
         # From "02_Converter_GUI.py"
         background = "#D5CFE1" # Lilac
 
+        self.starting_funds = IntVar()
+        self.starting_funds.set(0)
+
         # GUI to find starting balance and stakes from the user:
         self.start_frame = Frame(padx=10, pady=10, bg=background)
         self.start_frame.grid()
@@ -32,7 +35,7 @@ class Start:
         self.first_instruction.grid(row=2)
 
         # Entry Box, Button and Error Label Frame (Row 3)
-        self.entry_error_frame = Entry(self.start_frame, width=200)
+        self.entry_error_frame = Frame(self.start_frame, width=200, bg=background)
         self.entry_error_frame.grid(row=3)
 
         # Entry Box
@@ -42,10 +45,10 @@ class Start:
         # Add Funds Button
         self.add_funds_button = Button(self.entry_error_frame, font="Arial 14 bold", text="Add funds",
                                 command=self.check_funds)
-        self.add_funds_button.grid(row=0, collumn=1)
+        self.add_funds_button.grid(row=0, column=1)
 
         # Error Message
-        self.amount_error_label = Label(self.entry_error_frame, fg="#FF5733", text="",
+        self.amount_error_label = Label(self.entry_error_frame, fg="#FF5733", text="", bg=background,
                                         font="Arial 10 bold", wrap=300,
                                         justify=LEFT) # Bright Red
         self.amount_error_label.grid(row=1, columnspan=2, pady=5)
@@ -93,63 +96,11 @@ class Start:
                                     command=lambda: self.to_game(4),
                                     bg="#464655") # Lilac Text, Dark Grey Button
         self.help_button.grid(row=6, pady=10)
+    
 
     def check_funds(self):
-    starting_balance = self.start_amount_entry.get()
-    
-    # Set error background colours (and assume that there are no errors at the start)
-    error_background="#FFCCBB" # Pink
-    has_errors = "no"
-
-    # Change background to white (for testing purposes)
-    self.start_amount_entry.config(bg="#D5CFE1") # Lilac
-    self.amount_error_label.config(text="")
-
-    # Disable all stakes buttons at start of program
-    self.low_stakes_button.config(state=DISABLED)
-    self.medium_stakes_button.config(state=DISABLED)
-    self.high_stakes_button.config(state=DISABLED)
-
-    try:
-        starting_balance = int(starting_balance)
-
-        if starting_balance < 5:
-            has_errors = "yes"
-            error_feedback = "Sorry, the lowest amount that you can play the game with is $5.00."
-
-        elif starting_balance > 50:
-            has_errors = "yes"
-            error_feedback = "Sorry, the most that you can risk in this game is $50.00."
-
-        elif starting_balance >= 15:
-            # Enable all buttons
-            self.low_stakes_button.config(state=NORMAL)
-            self.medium_stakes_button.config(state=NORMAL)
-            self.high_stakes_button.config(state=NORMAL)
-        
-        elif starting_balance > = 10:
-            # Enable low and medium stakes buttons
-            self.low_stakes_button.config(state=NORMAL)
-            self.medium_stakes_button.config(state=NORMAL)
-
-        else:
-            self.low_stakes_button.config(state=NORMAL)
-        
-    except ValueError:
-        has_errors = "yes"
-        error_feedback = "Please enter a dollar amount (Text and decimal numbers are not allowed)."
-
-    if has_errors == "yes":
-        self.start_amount_entry.config(bg=error_background)
-        self.amount_error_label.config(text=error_feedback)
-
-    else:
-        # Set starting balance to amount entered by user
-        self.starting_funds.set(starting_balance)
-    
-    def to_game(self, stakes):
         starting_balance = self.start_amount_entry.get()
-        
+    
         # Set error background colours (and assume that there are no errors at the start)
         error_background="#FFCCBB" # Pink
         has_errors = "no"
@@ -157,6 +108,11 @@ class Start:
         # Change background to white (for testing purposes)
         self.start_amount_entry.config(bg="#D5CFE1") # Lilac
         self.amount_error_label.config(text="")
+
+        # Disable all stakes buttons at start of program
+        self.low_stakes_button.config(state=DISABLED)
+        self.medium_stakes_button.config(state=DISABLED)
+        self.high_stakes_button.config(state=DISABLED)
 
         try:
             starting_balance = int(starting_balance)
@@ -169,14 +125,20 @@ class Start:
                 has_errors = "yes"
                 error_feedback = "Sorry, the most that you can risk in this game is $50.00."
 
-            elif starting_balance < 10 and (stakes == 2 or stakes == 3):
-                has_errors = "yes"
-                error_feedback = "Sorry, you can only afford to play a low stakes game."
+            elif starting_balance >= 15:
+                # Enable all buttons
+                self.low_stakes_button.config(state=NORMAL)
+                self.medium_stakes_button.config(state=NORMAL)
+                self.high_stakes_button.config(state=NORMAL)
             
-            elif starting_balance < 15 and stakes == 3:
-                has_errors = "yes"
-                error_feedback = "Sorry, you can onlu afford to play a low or medium stakes game."
+            elif starting_balance >= 10:
+                # Enable low and medium stakes buttons
+                self.low_stakes_button.config(state=NORMAL)
+                self.medium_stakes_button.config(state=NORMAL)
 
+            else:
+                self.low_stakes_button.config(state=NORMAL)
+            
         except ValueError:
             has_errors = "yes"
             error_feedback = "Please enter a dollar amount (Text and decimal numbers are not allowed)."
@@ -184,10 +146,21 @@ class Start:
         if has_errors == "yes":
             self.start_amount_entry.config(bg=error_background)
             self.amount_error_label.config(text=error_feedback)
-        
-        else:
-            Game(self, stakes, starting_balance)
 
+        else:
+            # Set starting balance to amount entered by user
+            self.starting_funds.set(starting_balance)
+    
+    def to_game(self, stakes):
+
+        # Retrieve starting balance
+        starting_balance = self.start_amount_entry.get()
+
+        Game(self, stakes, starting_balance)
+
+        # Hide start up window
+        root.withdraw()
+        
 # Beginning of Game class
 class Game:
     def __init__(self, partner, stakes, starting_balance):
