@@ -20,10 +20,10 @@ class Start:
         starting_balance = 50
         stakes = 1
 
-        Game(self, stakes, starting_balance)
+        # Game(self, stakes, starting_balance)
 
         # Hide start up window
-        root.withdraw()
+        # root.withdraw()
 
-class Game:
-    def __init__(self, partner, stakes, starting_balance)
+# class Game:
+    # def __init__(self, partner, stakes, starting_balance)
