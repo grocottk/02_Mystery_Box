@@ -87,6 +87,12 @@ class Game:
         self.play_button = Button(self.game_frame, text="Open Boxes", bg="#F5B700",
                             font="Arial 15 bold", width=20, padx=10, pady=10,
                             command=self.reveal_boxes) # Orange (From "02_Start_GUI.py")
+
+        # Bind button to 'enter' key (so that users can press enter to reveal the boxes).
+        self.play_button.focus()
+        self.play_button.bind('<Return>', lambda e: self.reveal_boxes())
+
+        # End of Play button
         self.play_button.grid(row=3)
 
         # Balance label (Row 4)
@@ -177,6 +183,17 @@ class Game:
 
         # Edit label so user can see their balance
         self.balance_label.configure(text=balance_statement)
+
+        # Concludes game is remaining funds are too low.
+        if current_balance < 5 * stakes_multiplier:
+            self.play_button.config(state=DISABLED)
+            self.game_box.focus()
+            self.play_button.config(text="Game Over")
+
+            balance_statement = "Current Balance: ${}.00\n" \
+                                "Your balance is too low. Your only options are to quit " \
+                                "or view your statistics. Sorry about that.".format(current_balance)
+            self.balance_label.config(fg="red", font="Arial 10 bold", text=balance_statement)
 
     def to_quit(self):
         root.destroy()
