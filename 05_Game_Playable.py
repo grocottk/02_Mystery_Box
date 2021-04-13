@@ -25,7 +25,7 @@ class Start:
         Game(self, stakes, starting_balance)
 
         # Hide start up window
-        root.withdraw()
+        root.start_frame.destroy()
 
 class Game:
     def __init__(self, partner, stakes, starting_balance):
@@ -44,11 +44,15 @@ class Game:
 
         # GUI Setup
         self.game_box = Toplevel()
+
+        # If users press cross at top, the game quits
+        self.game_box.protocol('WM_DELETE_WINDOW', self.to_quit)
+
         self.game_frame = Frame(self.game_box)
         self.game_frame.grid()
 
         # Heading (Row 0)
-        self.heading_label = Label(self.game_frame, text="Play", fomt="Arial 24 bold",
+        self.heading_label = Label(self.game_frame, text="Play", font="Arial 24 bold",
                                 padx=10, pady=10)
         self.heading_label.grid(row=0)
 
@@ -106,3 +110,81 @@ class Game:
                                     font="Arial 15 bold", bg="#464655", fg="#D5CFE1") 
                                     # Lilac Text, Dark Grey Button (From "02_Start_GUI.py")
         self.statistics_button.grid(row=0, column=1, padx=2)
+
+        # Quit button (Row 6)
+        self.quit_button = Button(self.game_frame, text="Quit", fg="#D5CFE1",
+                                    bg="#F5B700", font="Arial 15 bold", width=20,
+                                    command=self.to_quit, padx=10)
+                                    # Lilac Text, Orange Button (From "02_Start_GUI.py")
+        self.quit_button.grid(row=6, pady=10)
+
+    # Parts taken from "04_Prize_Generation.py"
+    def reveal_boxes(self):
+        # Retrieve the balance from the initial function
+        current_balance = self.balance.get()
+        stakes_multiplier = self.multiplier.get()
+
+        # (Backgrounds used are for testing purposes, and are temporary.)
+        round_winnings = 0
+        prizes = []
+        button_backgrounds = []
+        for item in range(0, 3):
+            prize_number = random.randint(1, 100)
+
+            # This is a 5% chance of gold.
+            if 0 < prize_number <= 5:
+                prize = "Gold\n(${}.00)".format(5 * stakes_multiplier)
+                round_winnings += 5 * stakes_multiplier
+                background_colour = "red"
+
+            # This is a 20% chance of silver.
+            elif 5 < prize_number <= 25:
+                prize = "Silver\n(${}.00)".format(2 * stakes_multiplier)
+                round_winnings += 2 * stakes_multiplier
+                background_colour = "yellow"
+            
+            # This is a 40% chance of getting copper.
+            elif 25 < prize_number <= 65:
+                prize = "Copper\n(${}.00)".format(1 * stakes_multiplier)
+                round_winnings += 1 * stakes_multiplier
+                background_colour = "blue"
+            
+            # If none of the above are true, the prize is Lead, worth $0.00
+            else:
+                prize = "Lead\n($0.00)"
+                background_colour = "purple"
+
+            prizes.append(prize)
+            button_backgrounds.append(background_colour)
+
+        # Display prizes and change colour(s)
+        self.prize_one_label.config(text=prizes[0], bg=button_backgrounds[0])
+        self.prize_two_label.config(text=prizes[1], bg=button_backgrounds[1])
+        self.prize_three_label.config(text=prizes[2], bg=button_backgrounds[2])
+
+        # Deduct cost of game
+        current_balance -= 5 * stakes_multiplier
+
+        # Add winnings
+        current_balance += round_winnings
+
+        # Set balance to new balance
+        self.balance.set(current_balance)
+
+        balance_statement = "Game Cost: ${}.00\nPayback: ${} \n" \
+                            "Current Balance: ${}.00".format(5 * stakes_multiplier, 
+                            round_winnings, current_balance)
+
+        # Edit label so user can see their balance
+        self.balance_label.configure(text=balance_statement)
+
+    def to_quit(self):
+        root.destroy()
+
+# From "02_Start_GUI.py"
+# main routine
+if __name__ == "__main__":
+    root = Tk()
+    root.title("Mystery Box")
+    something = Start(root)
+    root.mainloop()
