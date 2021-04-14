@@ -135,6 +135,7 @@ class Game:
         # (Backgrounds used are for testing purposes, and are temporary.)
         round_winnings = 0
         prizes = []
+        statistics_prizes = []
         for item in range(0, 3):
             prize_number = random.randint(1, 100)
 
@@ -169,12 +170,12 @@ class Game:
         photo_three = prizes[2]
 
         # Display prizes and change colour(s)
-        self.prize_one_label.config(text=prizes[0])
+        self.prize_one_label.config(image=photo_one)
         self.prize_one_label.photo = photo_one
-        self.prize_two_label.config(text=prizes[1])
+        self.prize_two_label.config(image=photo_two)
         self.prize_two_label.photo = photo_two
-        self.prize_three_label.config(text=prizes[2])
-        self.prize_three_label = photo_three
+        self.prize_three_label.config(image=photo_three)
+        self.prize_three_label.photo = photo_three
 
         # Deduct cost of game
         current_balance -= 5 * stakes_multiplier
@@ -191,7 +192,11 @@ class Game:
         
         # Add round results to statistics list
         round_summary = "{} | {} | {} - Cost: ${}.00 | " \
-                        "Payback: $"
+                        "Payback: ${}.00 | Current Balance: ${}.00".format(
+                            statistics_prizes[0], statistics_prizes[1], statistics_prizes[2],
+                            5 * stakes_multiplier.round_winnings, current_balance)
+        self.round_statistics_list.append(round_summary)
+        print(self.round_statistics_list)
 
         # Edit label so user can see their balance
         self.balance_label.configure(text=balance_statement)
