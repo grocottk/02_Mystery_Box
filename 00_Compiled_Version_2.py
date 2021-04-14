@@ -72,22 +72,25 @@ class Start:
         # Low Stakes Button (Row 0, Column 0)
         self.low_stakes_button = Button(self.stakes_buttons_frame,
                                         command=lambda: self.to_game(1),
+                                        font="Arial 10 bold",
                                         text="Low: $5.00",
-                                        bg="#04E762", fg="#464655") # Dark Grey Text, Green Button
+                                        bg="#04E762", fg="black") # Black Text, Green Button
         self.low_stakes_button.grid(row=0, column=0, padx=10)
 
         # Medium Stakes Button (Row 0, Column 1)
         self.medium_stakes_button = Button(self.stakes_buttons_frame,
                                         command=lambda: self.to_game(2),
+                                        font="Arial 10 bold",
                                         text="Medium: $10.00",
-                                        bg="#F5B700", fg="#464655") # Dark Grey Text, Orange Button
+                                        bg="#F5B700", fg="black") # Black Text, Orange Button
         self.medium_stakes_button.grid(row=0, column=1, padx=10)
 
         # High Stakes Button (Row 0, Column 2)
         self.high_stakes_button = Button(self.stakes_buttons_frame,
                                         command=lambda: self.to_game(3),
+                                        font="Arial 10 bold",
                                         text="High: $15.00",
-                                        bg="#00A1E4", fg="#464655") # Dark Grey Text, Blue Button
+                                        bg="#00A1E4", fg="black") # Black Text, Blue Button
         self.high_stakes_button.grid(row=0, column=2, padx=10)
 
         # Disable all stakes buttons at start of program
@@ -158,7 +161,7 @@ class Start:
         Game(self, stakes, starting_balance)
 
         # Hide start up window (From "05_Game_Playable.py")
-        root.start_frame.destroy()
+        self.start_frame.destroy()
 
 # Beginning of Game class
 class Game:
@@ -220,9 +223,9 @@ class Game:
         self.prize_three_label.grid(row=0, column=2)
 
         # Play button (Row 3)
-        self.play_button = Button(self.game_frame, text="Open Boxes", bg="#F5B700",
+        self.play_button = Button(self.game_frame, text="Open Boxes", bg="#04E762", fg="#464655",
                             font="Arial 15 bold", width=20, padx=10, pady=10,
-                            command=self.reveal_boxes) # Orange (From "02_Start_GUI.py")
+                            command=self.reveal_boxes) # Green Button with Dark Grey Text (From "02_Start_GUI.py")
 
         # Bind button to 'enter' key (so that users can press enter to reveal the boxes).
         self.play_button.focus()
@@ -235,8 +238,8 @@ class Game:
         start_text = "Game Cost: ${} \n "" \nHow much " \
                         "will you win?".format(stakes * 5)
         
-        self.balance_label = Label(self.game_frame, font="Arial 12 bold", fg="#D5CFE1",
-                                text=start_text, wrap=300, justify=LEFT) # Dark Grey (From "02_Start_GUI.py")
+        self.balance_label = Label(self.game_frame, font="Arial 12 bold", fg="#464655",
+                                text=start_text, wrap=300, justify=LEFT) # Dark Grey Text (From "02_Start_GUI.py")
         self.balance_label.grid(row=4, pady=10)
 
         # Help and Game Statistics button (Row 5)
@@ -254,10 +257,10 @@ class Game:
         self.statistics_button.grid(row=0, column=1, padx=2)
 
         # Quit button (Row 6)
-        self.quit_button = Button(self.game_frame, text="Quit", fg="#D5CFE1",
+        self.quit_button = Button(self.game_frame, text="Quit", fg="black",
                                     bg="#F5B700", font="Arial 15 bold", width=20,
                                     command=self.to_quit, padx=10)
-                                    # Lilac Text, Orange Button (From "02_Start_GUI.py")
+                                    # Black Text, Orange Button (From "02_Start_GUI.py")
         self.quit_button.grid(row=6, pady=10)
 
     # Parts taken from "04_Prize_Generation.py"
@@ -327,13 +330,15 @@ class Game:
         # Add round results to statistics list
         round_summary = "{} | {} | {} - Cost: ${}.00 | " \
                         "Payback: ${}.00 | Current Balance: ${}.00".format(
-                            statistics_prizes[0], statistics_prizes[1], statistics_prizes[2],
-                            5 * stakes_multiplier.round_winnings, current_balance)
+                            statistics_prizes[0], 
+                            statistics_prizes[1], 
+                            statistics_prizes[2],
+                            5 * stakes_multiplier, round_winnings, current_balance)
         self.round_statistics_list.append(round_summary)
         print(self.round_statistics_list)
 
         # Edit label so user can see their balance
-        self.balance_label.configure(text=balance_statement)
+        self.balance_label.configure(text=balance_statement, fg="#464655") # Dark Grey Text (From "02_Start_GUI.py")
 
         # Concludes game is remaining funds are too low.
         if current_balance < 5 * stakes_multiplier:

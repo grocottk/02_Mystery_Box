@@ -194,7 +194,7 @@ class Game:
         round_summary = "{} | {} | {} - Cost: ${}.00 | " \
                         "Payback: ${}.00 | Current Balance: ${}.00".format(
                             statistics_prizes[0], statistics_prizes[1], statistics_prizes[2],
-                            5 * stakes_multiplier.round_winnings, current_balance)
+                            5 * stakes_multiplier, round_winnings, current_balance)
         self.round_statistics_list.append(round_summary)
         print(self.round_statistics_list)
 
