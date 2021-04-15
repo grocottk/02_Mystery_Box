@@ -1,169 +1,32 @@
-# Initial outline from Support Files.
+# Some lines of code are inspired by "02_Start_GUI.py"
 
 from tkinter import *
+from functools import partial # To prevent unwanted windows.
 import random
-
-# The following has been done to prevent unwanted windows
-from functools import partial
 
 # Beginning of Start class
 class Start:
     def __init__(self, parent):
 
-        # From "02_Converter_GUI.py"
-        background = "#D5CFE1" # Lilac
-
-        self.starting_funds = IntVar()
-        self.starting_funds.set(0)
-
         # GUI to find starting balance and stakes from the user:
-        self.start_frame = Frame(padx=10, pady=10, bg=background)
+        self.start_frame = Frame(padx=10, pady=10)
         self.start_frame.grid()
 
-        # Mystery Heading (Row 0)
-        self.mystery_box_label = Label(self.start_frame, text="Mystery Box",
-                                       font="Arial 19 bold",
-                                       bg=background, fg="#464655") # Dark Grey
-        self.mystery_box_label.grid(row=0)
+        # Test Button (Row 0)
+        self.push_me_button = Button(self.start_frame, text="Press This", command=self.to_game)
+        self.push_me_button.grid(row=0, pady=5)
 
-        # Mystery Subheading (Row 1)
-        self.mystery_subheading = Label(self.start_frame, text="Welcome to the Mystery Box Game",
-                                       font="Arial 10", bg=background, fg="#464655") # Dark Grey
-        self.mystery_subheading.grid(row=1)
-
-        # Text wrap and Justify code from "01_Help_GUI.py".
-        # First Instruction (Row 2)
-        self.first_instruction = Label(self.start_frame, text="Please enter a dollar amount in the box below (between 5 and 50).",
-                                       font="Arial 10 italic", wrap=300,
-                                       justify=LEFT, bg=background, fg="#464655") # Dark Grey
-        self.first_instruction.grid(row=2)
-
-        # Entry Box, Button and Error Label Frame (Row 3)
-        self.entry_error_frame = Frame(self.start_frame, width=200, bg=background)
-        self.entry_error_frame.grid(row=3)
-
-        # Entry Box
-        self.start_amount_entry = Entry(self.entry_error_frame, font="Arial 14 bold", width=10)
-        self.start_amount_entry.grid(row=0, column=0)
-
-        # Add Funds Button
-        self.add_funds_button = Button(self.entry_error_frame, font="Arial 14 bold", text="Add funds",
-                                command=self.check_funds)
-        self.add_funds_button.grid(row=0, column=1)
-
-        # Error Message
-        self.amount_error_label = Label(self.entry_error_frame, fg="#FF5733", text="", bg=background,
-                                        font="Arial 10 bold", wrap=300,
-                                        justify=LEFT) # Bright Red
-        self.amount_error_label.grid(row=1, columnspan=2, pady=5)
-
-        # Text wrap and Justify code from "01_Help_GUI.py".
-        # Second Instruction (Row 4)
-        self.second_instruction = Label(self.start_frame, text="After you have entered this number, please choose your stakes. The higher stakes that you choose, the higher your possible winnings are.",
-                                       font="Arial 10 italic", wrap=300,
-                                       justify=LEFT, bg=background, fg="#464655") # Dark Grey
-        self.second_instruction.grid(row=4)
-        
-        # Inspired by "Conversion buttons frame" from "12g_Assembled_Program.py" as a part of "01_Temperature_Converter".
-        # Stakes Buttons Frame (Row 5)
-        self.stakes_buttons_frame = Frame(self.start_frame, bg=background)
-        self.stakes_buttons_frame.grid(row=5, pady=10)
-
-        # Low Stakes Button (Row 0, Column 0)
-        self.low_stakes_button = Button(self.stakes_buttons_frame,
-                                        command=lambda: self.to_game(1),
-                                        font="Arial 10 bold",
-                                        text="Low: $5.00",
-                                        bg="#04E762", fg="black") # Black Text, Green Button
-        self.low_stakes_button.grid(row=0, column=0, padx=10)
-
-        # Medium Stakes Button (Row 0, Column 1)
-        self.medium_stakes_button = Button(self.stakes_buttons_frame,
-                                        command=lambda: self.to_game(2),
-                                        font="Arial 10 bold",
-                                        text="Medium: $10.00",
-                                        bg="#F5B700", fg="black") # Black Text, Orange Button
-        self.medium_stakes_button.grid(row=0, column=1, padx=10)
-
-        # High Stakes Button (Row 0, Column 2)
-        self.high_stakes_button = Button(self.stakes_buttons_frame,
-                                        command=lambda: self.to_game(3),
-                                        font="Arial 10 bold",
-                                        text="High: $15.00",
-                                        bg="#00A1E4", fg="black") # Black Text, Blue Button
-        self.high_stakes_button.grid(row=0, column=2, padx=10)
-
-        # Disable all stakes buttons at start of program
-        self.low_stakes_button.config(state=DISABLED)
-        self.medium_stakes_button.config(state=DISABLED)
-        self.high_stakes_button.config(state=DISABLED)
-
-        # Help Button (Row 6) [Removed]
-    
-    def check_funds(self):
-        starting_balance = self.start_amount_entry.get()
-    
-        # Set error background colours (and assume that there are no errors at the start)
-        error_background="#FFCCBB" # Pink
-        has_errors = "no"
-
-        # Change background to white (for testing purposes)
-        self.start_amount_entry.config(bg="#D5CFE1") # Lilac
-        self.amount_error_label.config(text="")
-
-        # Disable all stakes buttons at start of program
-        self.low_stakes_button.config(state=DISABLED)
-        self.medium_stakes_button.config(state=DISABLED)
-        self.high_stakes_button.config(state=DISABLED)
-
-        try:
-            starting_balance = int(starting_balance)
-
-            if starting_balance < 5:
-                has_errors = "yes"
-                error_feedback = "Sorry, the lowest amount that you can play the game with is $5.00."
-
-            elif starting_balance > 50:
-                has_errors = "yes"
-                error_feedback = "Sorry, the most that you can risk in this game is $50.00."
-
-            elif starting_balance >= 15:
-                # Enable all buttons
-                self.low_stakes_button.config(state=NORMAL)
-                self.medium_stakes_button.config(state=NORMAL)
-                self.high_stakes_button.config(state=NORMAL)
-            
-            elif starting_balance >= 10:
-                # Enable low and medium stakes buttons
-                self.low_stakes_button.config(state=NORMAL)
-                self.medium_stakes_button.config(state=NORMAL)
-
-            else:
-                self.low_stakes_button.config(state=NORMAL)
-            
-        except ValueError:
-            has_errors = "yes"
-            error_feedback = "Please enter a dollar amount (Text and decimal numbers are not allowed)."
-
-        if has_errors == "yes":
-            self.start_amount_entry.config(bg=error_background)
-            self.amount_error_label.config(text=error_feedback)
-
-        else:
-            # Set starting balance to amount entered by user
-            self.starting_funds.set(starting_balance)
-    
-    def to_game(self, stakes):
+    def to_game(self):
 
         # Retrieve starting balance
-        starting_balance = self.start_amount_entry.get()
+        starting_balance = 50
+        stakes = 2
 
         Game(self, stakes, starting_balance)
 
-        # Hide start up window (From "05_Game_Playable.py")
-        self.start_frame.destroy()
+        # Hide start up window
+        root.start_frame.destroy()
 
-# Beginning of Game class
 class Game:
     def __init__(self, partner, stakes, starting_balance):
 
@@ -223,9 +86,9 @@ class Game:
         self.prize_three_label.grid(row=0, column=2)
 
         # Play button (Row 3)
-        self.play_button = Button(self.game_frame, text="Open Boxes", bg="#04E762", fg="#464655",
+        self.play_button = Button(self.game_frame, text="Open Boxes", bg="#F5B700",
                             font="Arial 15 bold", width=20, padx=10, pady=10,
-                            command=self.reveal_boxes) # Green Button with Dark Grey Text (From "02_Start_GUI.py")
+                            command=self.reveal_boxes) # Orange (From "02_Start_GUI.py")
 
         # Bind button to 'enter' key (so that users can press enter to reveal the boxes).
         self.play_button.focus()
@@ -238,8 +101,8 @@ class Game:
         start_text = "Game Cost: ${} \n "" \nHow much " \
                         "will you win?".format(stakes * 5)
         
-        self.balance_label = Label(self.game_frame, font="Arial 12 bold", fg="#464655",
-                                text=start_text, wrap=300, justify=LEFT) # Dark Grey Text (From "02_Start_GUI.py")
+        self.balance_label = Label(self.game_frame, font="Arial 12 bold", fg="#D5CFE1",
+                                text=start_text, wrap=300, justify=LEFT) # Dark Grey (From "02_Start_GUI.py")
         self.balance_label.grid(row=4, pady=10)
 
         # Help and Game Statistics button (Row 5)
@@ -257,14 +120,13 @@ class Game:
         self.statistics_button.grid(row=0, column=1, padx=2)
 
         # Quit button (Row 6)
-        self.quit_button = Button(self.game_frame, text="Quit", fg="black",
+        self.quit_button = Button(self.game_frame, text="Quit", fg="#D5CFE1",
                                     bg="#F5B700", font="Arial 15 bold", width=20,
                                     command=self.to_quit, padx=10)
-                                    # Black Text, Orange Button (From "02_Start_GUI.py")
+                                    # Lilac Text, Orange Button (From "02_Start_GUI.py")
         self.quit_button.grid(row=6, pady=10)
 
     # Parts taken from "04_Prize_Generation.py"
-    # Image correction from "05b_Game_Playable_With_Photos.py"
     def reveal_boxes(self):
         # Retrieve the balance from the initial function
         current_balance = self.balance.get()
@@ -337,15 +199,13 @@ class Game:
         # Add round results to statistics list
         round_summary = "{} | {} | {} - Cost: ${}.00 | " \
                         "Payback: ${}.00 | Current Balance: ${}.00".format(
-                            statistics_prizes[0], 
-                            statistics_prizes[1], 
-                            statistics_prizes[2],
+                            statistics_prizes[0], statistics_prizes[1], statistics_prizes[2],
                             5 * stakes_multiplier, round_winnings, current_balance)
         self.round_statistics_list.append(round_summary)
         print(self.round_statistics_list)
 
         # Edit label so user can see their balance
-        self.balance_label.configure(text=balance_statement, fg="#464655") # Dark Grey Text (From "02_Start_GUI.py")
+        self.balance_label.configure(text=balance_statement)
 
         # Concludes game is remaining funds are too low.
         if current_balance < 5 * stakes_multiplier:
