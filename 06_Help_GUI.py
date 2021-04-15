@@ -70,7 +70,7 @@ if __name__ == '__main__':
             help_text = "Choose an amount to play with and"
 
             # Help text (Label, Row 1)
-            self.help_text = Label(self.help_frame, text="Test",
+            self.help_text = Label(self.help_frame, text=help_text,
                                    justify=LEFT, width=40,
                                    bg=background, wrap=250)
             self.help_text.grid(row=1)

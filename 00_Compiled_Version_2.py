@@ -6,12 +6,13 @@ import random
 # The following has been done to prevent unwanted windows
 from functools import partial
 
+
 # Beginning of Start class
 class Start:
     def __init__(self, parent):
 
         # From "02_Converter_GUI.py"
-        background = "#D5CFE1" # Lilac
+        background = "#D5CFE1"  # Lilac
 
         self.starting_funds = IntVar()
         self.starting_funds.set(0)
@@ -23,12 +24,12 @@ class Start:
         # Mystery Heading (Row 0)
         self.mystery_box_label = Label(self.start_frame, text="Mystery Box",
                                        font="Arial 19 bold",
-                                       bg=background, fg="#464655") # Dark Grey
+                                       bg=background, fg="#464655")  # Dark Grey
         self.mystery_box_label.grid(row=0)
 
         # Mystery Subheading (Row 1)
-        self.mystery_subheading = Label(self.start_frame, text="Welcome to the Mystery Box Game",
-                                       font="Arial 10", bg=background, fg="#464655") # Dark Grey
+        self.mystery_subheading = Label(self.start_frame, text="Welcome to the Mystery Box Game", font="Arial 10",
+                                    bg=background, fg="#464655")  # Dark Grey
         self.mystery_subheading.grid(row=1)
 
         # Text wrap and Justify code from "01_Help_GUI.py".
