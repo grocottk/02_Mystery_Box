@@ -143,7 +143,7 @@ class GameStatistics:
         self.games_played_value_label = Label(self.details_frame, font=content,
                                                     text=len(game_history),
                                                     anchor="w")
-        self.win_or_loss_value_label.grid(row=3, column=1, padx=0)
+        self.games_played_value_label.grid(row=3, column=1, padx=0)
 
         # Dismiss and Export buttons [From "05b_Game_Playable_With_Photos.py"] (Row 3)
         self.dismiss_export_frame = Frame(self.statistics_frame)
