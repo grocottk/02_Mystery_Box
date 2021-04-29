@@ -69,10 +69,11 @@ if __name__ == '__main__':
             # Help text definition
             help_text = "Choose an amount to play with and then choose the stakes. " \
                         "Higher stakes cost more per round, but you can win more as well." \
-                        "When you enter the play area, you will see three 'mystery boxes'. "
-                        "To reveal the contents of these boxes, click the 'Open Boxes' button "
-                        "toward the bottom of the window. If you don't have enough money to continue playing, "
-                        "the button will turn red,"
+                        "When you enter the play area, you will see three mystery boxes. " \
+                        "To reveal the contents of these boxes, " \
+                        "click the Open Boxes " \
+                        "button toward the bottom of the window. If you don't have enough money to"  \
+                        "the button will turn red," \
 
             # Help text (Label, Row 1)
             self.help_text = Label(self.help_frame, text=help_text,
