@@ -36,7 +36,7 @@ class Game:
                                           padx=10, pady=10)
         self.heading_label.grid(row=0)
 
-        # History Button (Row 1)
+        # Statistics Button (Row 1)
         self.statistics_button = Button(self.game_frame, text="Game Statistics",
                                      font=("Arial 14"),
                                      padx=10, pady=10,
