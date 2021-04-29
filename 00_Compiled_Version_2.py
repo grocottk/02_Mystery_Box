@@ -248,7 +248,8 @@ class Game:
         self.help_export_frame.grid(row=5, pady=10)
 
         self.help_button = Button(self.help_export_frame, text="Help/Rules",
-                            font="Arial 15 bold", bg="#464655", fg="#D5CFE1") 
+                            font="Arial 15 bold", bg="#464655", fg="#D5CFE1",
+                            command=self.help)
                             # Lilac Text, Dark Grey Button (From "02_Start_GUI.py")
         self.help_button.grid(row=0, column=0, padx=2)
 
@@ -361,6 +362,74 @@ class Game:
 
     def to_quit(self):
         root.destroy()
+
+    def help(self):
+        print("You asked for help")
+        get_help = Help(self)
+
+# Beginning of Help class
+class Help:
+
+        # Set up initial function
+        def __init__(self, partner):
+
+            background = "orange"
+
+            # Disable help button
+            partner.help_button.config(state=DISABLED)
+
+            # Sets up child window (or help box)
+            self.help_box = Toplevel()
+
+            # If users press cross at the top of the window, help closes and the help button 'releasrs'
+            self.help_box.protocol('WM_DELETE_WINDOW', partial(self.close_help, partner))
+
+            # Set up GUI Frame
+            self.help_frame = Frame(self.help_box, bg=background)
+            self.help_frame.grid()
+
+            # Help heading (Row 0)
+            self.how_heading = Label(self.help_frame,
+                                     text="Help and Instructions",
+                                     font="Arial 16 bold",
+                                     bg=background)
+            self.how_heading.grid(row=0)
+
+            # Help text definition
+            help_text = "Choose an amount to play with and then choose the stakes. " \
+                        "Higher stakes cost more per round, but you can win more as well.\n\n" \
+                        "When you enter the play area, you will see three mystery boxes. " \
+                        "To reveal the contents of these boxes, click the Open Boxes " \
+                        "button toward the bottom of the window. " \
+                        "If you don't have enough money to continue, the button will turn red " \
+                        "and you will have to quit the game.\n\n" \
+                        "The contents of the boxes will be added to your balance. " \
+                        "These boxes can contain the following:\n\n" \
+                        "Low Stakes: Lead ($0.00) | Copper ($1.00) | Silver ($2.00) | Gold ($10.00)\n" \
+                        "Medium Stakes: Lead ($0.00) | Copper ($2.00) | Silver ($4.00) | Gold ($25.00)\n" \
+                        "High Stakes: Lead ($0.00) | Copper ($5.00) | Silver ($10.00) | Gold ($50.00)\n\n" \
+                        "If each box contains gold, you can earn $30.00 (with Low Stakes). " \
+                        "If they contained copper, silver and gold, you would recieve $13.00 " \
+                        "($1.00 + $2.00 + $10.00) and so on. " \
+
+            # Help text (Label, Row 1)
+            self.help_text = Label(self.help_frame, text=help_text,
+                                justify=LEFT, width=40,
+                                bg=background, wrap=250)
+            self.help_text.grid(row=1)
+
+            # Dismiss button (Row 2)
+            self.dismiss_button = Button(self.help_frame, text="Dismiss",
+                                         width =10, bg="pink", font="arial 10 bold",
+                                         command=partial(self.close_help, partner))
+            self.dismiss_button.grid(row=2, pady=10)
+
+        # Defining close_help function
+        def close_help(self, partner):
+
+            # Put help button back into a normal state..
+            partner.help_button.config(state=NORMAL)
+            self.help_box.destroy()
 
 # From "02_Start_GUI.py"
 # main routine

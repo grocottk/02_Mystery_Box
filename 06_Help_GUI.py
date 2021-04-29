@@ -68,12 +68,20 @@ if __name__ == '__main__':
 
             # Help text definition
             help_text = "Choose an amount to play with and then choose the stakes. " \
-                        "Higher stakes cost more per round, but you can win more as well." \
+                        "Higher stakes cost more per round, but you can win more as well.\n\n" \
                         "When you enter the play area, you will see three mystery boxes. " \
-                        "To reveal the contents of these boxes, " \
-                        "click the Open Boxes " \
-                        "button toward the bottom of the window. If you don't have enough money to"  \
-                        "the button will turn red," \
+                        "To reveal the contents of these boxes, click the Open Boxes " \
+                        "button toward the bottom of the window. " \
+                        "If you don't have enough money to continue, the button will turn red " \
+                        "and you will have to quit the game.\n\n" \
+                        "The contents of the boxes will be added to your balance. " \
+                        "These boxes can contain the following:\n\n" \
+                        "Low Stakes: Lead ($0.00) | Copper ($1.00) | Silver ($2.00) | Gold ($10.00)\n" \
+                        "Medium Stakes: Lead ($0.00) | Copper ($2.00) | Silver ($4.00) | Gold ($25.00)\n" \
+                        "High Stakes: Lead ($0.00) | Copper ($5.00) | Silver ($10.00) | Gold ($50.00)\n\n" \
+                        "If each box contains gold, you can earn $30.00 (with Low Stakes). " \
+                        "If they contained copper, silver and gold, you would recieve $13.00 " \
+                        "($1.00 + $2.00 + $10.00) and so on. " \
 
             # Help text (Label, Row 1)
             self.help_text = Label(self.help_frame, text=help_text,
