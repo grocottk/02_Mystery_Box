@@ -7,7 +7,6 @@ from functools import partial  # To prevent unwanted windows (being created)
 import random
 
 class Game:
-
     def __init__(self, parent):
 
         # Formatting variables...
@@ -36,7 +35,7 @@ class Game:
         self.statistics_button = Button(self.game_frame, text="Game Statistics",
                                      font=("Arial 14"),
                                      padx=10, pady=10,
-                                     command=lambda: self.to_statistics(self.round_statistics_list))
+                                     command=lambda: self.to_statistics(self.round_statistics_list, self.game_statistics_list))
         self.statistics_button.grid(row=1)
 
     def to_statistics(self, game_history, game_statistics):
@@ -45,95 +44,101 @@ class Game:
 class GameStatistics:
 
     # Set up initial function
-    def __init__(self, game_history, game_statistics):
+    def __init__(self, partner, game_history, game_statistics):
 
         print(game_history)
 
         # Disable history button
-        partner.history_button.config(state=DISABLED)
+        partner.statistics_button.config(state=DISABLED)
 
-        # Sets up child window (or history box)
-        self.history_box = Toplevel()
+        heading = "Arial 12 bold"
+        content = "Arial 12"
 
-        # If users press cross at the top of the window, history closes and the history button 'releases'
-        self.history_box.protocol('WM_DELETE_WINDOW', partial(self.close_history, partner))
+        # Sets up child window (or statistics box)
+        self.statistics_box = Toplevel()
+
+        # If users press cross at the top of the window, statistics closes and the statistics button 'releases'
+        self.statistics_box.protocol('WM_DELETE_WINDOW', partial(self.close_statistics, partner))
 
         # Set up GUI Frame
-        self.history_frame = Frame(self.history_box, bg=background)
-        self.history_frame.grid()
+        self.statistics_frame = Frame(self.statistics_box)
+        self.statistics_frame.grid()
 
         # Set up history heading (Row 0)
-        self.how_heading = Label(self.history_frame,
-                                    text="Calculation History",
-                                    font="arial 19 bold",
-                                    bg=background)
+        self.how_heading = Label(self.statistics_frame,
+                                    text="Game Statistics",
+                                    font="arial 19 bold")
         self.how_heading.grid(row=0)
 
-        # History text (Label, Row 1)
-        self.history_text = Label(self.history_frame,
-                                    text="Here are the most recently completed calculations."
-                                        " Please use the export button to create a text file"
-                                        " of all your calculations for this session (if desired).",
-                                    font="arial 10 italic",
-                                    justify=LEFT, width=40, fg="orange",
-                                    bg=background, wrap=250, padx=10, pady=10)
-        self.history_text.grid(row=1)
+        # To Export [Instructions] (Row 1)
+        self.export_instructions = Label(self.statistics_frame,
+                                    text="Here are your Game Statistics. "
+                                            "Please use the Export button to "
+                                            "access tge results of each "
+                                            "round that you played",
+                                    justify=LEFT, fg="green",
+                                    font="arial 10 italic", wrap=250,
+                                    padx=10, pady=10)
+        self.export_instructions.grid(row=1)
 
-        # Dismiss button (Row 2)
-        self.dismiss_button = Button(self.history_frame, text="Dismiss",
-                                        width=10, bg="orange", font="arial 10 bold",
-                                        command=partial(self.close_history, partner))
+        # Statistics Frame (Row 2)
+        self.details_frame = Frame(self.statistics_frame)
+        self.details_frame.grid(row=2)
 
-        # History output: (Row 2)
+        # Starting Balance Heading (Row 0, Column 0)
+        self.starting_balance_label = Label(self.details_frame, text="Starting Balance:",
+                                        font=heading, anchor="e")
+        self.starting_balance_label.grid(row=0, column=0, padx=0)
 
-        # Generate string from list of calculations:
-        history_string = ""
+        # Starting Balance Text (Row 0, Column 1)
+        self.starting_balance_value_label = Label(self.details_frame, font=content,
+                                                    text="${}".format(game_statistics[0]),
+                                                    anchor="w")
+        self.starting_balance_value_label.grid(row=0, column=1, padx=0)
 
-        # Defining "empty string"
-        if len(calculation_history) >= 7:
-            for item in range(0, 7):
-                history_string += calculation_history[len(calculation_history)
-                                                        - item - 1]+"\n"
+        # Current Balance Heading (Row 1, Column 0)
+        self.current_balance_label = Label(self.details_frame, text="Current Balance:",
+                                            font=heading, anchor="e")
+        self.current_balance_label.grid(row=1, column=0, padx=0)
 
-        # This code may come into effect when a small number of "calculation_history"
-        # ... entries have been created.
+        # Current Balance Text (Row 1, Column 1)
+        self.current_balance_value_label = Label(self.details_frame, font=content,
+                                                    text="${}".format(game_statistics[1]),
+                                                    anchor="w")
+        self.current_balance_value_label.grid(row=1, column=1, padx=0)
+
+        # To find whether a win or loss has occured
+        if game_statistics[1] > game_statistics[0]:
+            win_or_loss = "Amount Won:"
+            amount = game_statistics[1] - game_statistics[0]
+            win_or_loss_fg = "green"
         else:
-            for item in calculation_history:
-                history_string += calculation_history[len(calculation_history) -
-                                                        calculation_history.index(item) - 1] + "\n"
-                self.history_text.config(text="Here are your complete calculations."
-                                                " Please use the export button to create a text file"
-                                                " of the calculations for this session (if desired).")
+            win_or_loss = "Amount Lost:"
+            amount = game_statistics[0] - game_statistics[1]
+            win_or_loss_fg = "red"
 
-        # Label to display calculation history to user
-        self.calculation_label = Label(self.history_frame, text=history_string,
-                                        bg=background, font="Arial 12", justify=LEFT)
-        self.calculation_label.grid(row=2)
+        # Amount won or lost Heading (Row 2, Column 0)
+        self.win_or_loss_label = Label(self.details_frame, text=win_or_loss,
+                                            font=heading, anchor="e")
+        self.win_or_loss_label.grid(row=2, column=0, padx=0)
 
-        # Export / Dismiss buttons frame (Row 3)
-        self.export_dismiss_frame = Frame(self.history_frame)
-        self.export_dismiss_frame.grid(row=3, pady=10)
+        # Amount won or lost Text (Row 2, Column 1)
+        self.win_or_loss_value_label = Label(self.details_frame, font=content,
+                                                    text="${}".format(amount),
+                                                    fg=win_or_loss_fg,
+                                                    anchor="w")
+        self.win_or_loss_value_label.grid(row=2, column=1, padx=0)
 
-        # Export Button
-        self.export_button = Button(self.export_dismiss_frame, text="Export",
-                                    font="Arial 12 bold")
-        self.export_button.grid(row=0, column=0)
+        # Rounds Played Heading (Row 3, Column 0)
+        self.games_played_label = Label(self.details_frame, text="Rounds Played:",
+                                            font=heading, anchor="e")
+        self.games_played_label.grid(row=3, column=0, padx=0)
 
-        # Dismiss Button
-        self.dismiss_button = Button(self.export_dismiss_frame, text="Dismiss",
-                                        # (use of 'partner' parameter from 01_Help_GUI.py)
-                                        font="Arial 12 bold", command=partial(self.close_history, partner))
-        self.dismiss_button.grid(row=0, column=1)
-
-    # Closes history
-    def close_history(self, partner):
-
-        # Put history button back to normal:
-        partner.history_button.config(state=NORMAL)
-        self.history_box.destroy()
-
-    # Show user their [calculation] history (Row 2)
-
+        # Rounds Played Text (Row 3, Column 1)
+        self.games_played_value_label = Label(self.details_frame, font=content,
+                                                    text=len(game_history),
+                                                    anchor="w")
+        self.win_or_loss_value_label.grid(row=3, column=1, padx=0)
 
 # From "02_Start_GUI.py"
 # main routine
