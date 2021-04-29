@@ -145,12 +145,22 @@ class GameStatistics:
                                                     anchor="w")
         self.win_or_loss_value_label.grid(row=3, column=1, padx=0)
 
-        # Dismiss button [From "00_Compiled_Version_2.py"] (Row 4)
-        self.dismiss_button = Button(self.statistics_frame, text="Dismiss",
+        # Dismiss and Export buttons [From "05b_Game_Playable_With_Photos.py"] (Row 3)
+        self.dismiss_export_frame = Frame(self.statistics_frame)
+        self.dismiss_export_frame.grid(row=3)
+
+        # Dismiss button [From "00_Compiled_Version_2.py"] (Row 0, Column 0)
+        self.dismiss_button = Button(self.dismiss_export_frame, text="Dismiss",
                                         width =10, bg="pink", font="arial 10 bold",
                                         command=partial(self.close_statistics, partner))
-        self.dismiss_button.grid(row=4, pady=10)
+        self.dismiss_button.grid(row=0, column=0, pady=10)
 
+        # Export button (Row 0, Column 1)
+        self.export_button = Button(self.dismiss_export_frame, text="Export",
+                                    font="Arial 15 bold", bg="#464655", fg="#D5CFE1") 
+                                    # Lilac Text, Dark Grey Button (From "02_Start_GUI.py")
+        self.export_button.grid(row=0, column=1, padx=10)
+    
     # Closes statistics
     def close_statistics(self, partner):
 
