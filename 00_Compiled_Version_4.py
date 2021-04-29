@@ -180,8 +180,9 @@ class Game:
         self.multiplier = IntVar()
         self.multiplier.set(stakes)
 
-        # List got holding statistics
+        # List(s) [for] holding statistics
         self.round_statistics_list = []
+        self.game_statistics_list=[starting_balance, starting_balance]
 
         # GUI Setup
         self.game_box = Toplevel()
@@ -254,7 +255,8 @@ class Game:
         self.help_button.grid(row=0, column=0, padx=2)
 
         self.statistics_button = Button(self.help_export_frame, text="Game Statistics",
-                                    font="Arial 15 bold", bg="#464655", fg="#D5CFE1") 
+                                    font="Arial 15 bold", bg="#464655", fg="#D5CFE1",
+                                    command=lambda: self.to_statistics(self.round_statistics_list, self.game_statistics_list))
                                     # Lilac Text, Dark Grey Button (From "02_Start_GUI.py")
         self.statistics_button.grid(row=0, column=1, padx=2)
 
@@ -332,6 +334,10 @@ class Game:
         # Set balance to new balance
         self.balance.set(current_balance)
 
+        # Update game_statistics_list with current balance
+        # (This means that the item in position 1 of the list is replaced with the current balance)
+        self.game_statistics_list[1] = current_balance
+
         balance_statement = "Game Cost: ${}.00\nPayback: ${} \n" \
                             "Current Balance: ${}.00".format(5 * stakes_multiplier, 
                             round_winnings, current_balance)
@@ -360,12 +366,18 @@ class Game:
                                 "or view your statistics. Sorry about that.".format(current_balance)
             self.balance_label.config(fg="red", font="Arial 10 bold", text=balance_statement)
 
+    # Allows for the program to quit
     def to_quit(self):
         root.destroy()
 
+    # Allows for the help window to be called
     def help(self):
         print("You asked for help")
         get_help = Help(self)
+
+    # Allows for the statistics window to be called
+    def to_statistics(self, game_history, game_statistics):
+        GameStatistics(self, game_history, game_statistics)
 
 # Beginning of Help class
 class Help:
@@ -430,6 +442,128 @@ class Help:
             # Put help button back into a normal state..
             partner.help_button.config(state=NORMAL)
             self.help_box.destroy()
+
+class GameStatistics:
+
+    # Set up initial function
+    def __init__(self, partner, game_history, game_statistics):
+
+        print(game_history)
+
+        # Disable history button
+        partner.statistics_button.config(state=DISABLED)
+
+        heading = "Arial 12 bold"
+        content = "Arial 12"
+
+        # Sets up child window (or statistics box)
+        self.statistics_box = Toplevel()
+
+        # If users press cross at the top of the window, statistics closes and the statistics button 'releases'
+        self.statistics_box.protocol('WM_DELETE_WINDOW', partial(self.close_statistics, partner))
+
+        # Set up GUI Frame
+        self.statistics_frame = Frame(self.statistics_box)
+        self.statistics_frame.grid()
+
+        # Set up Statistics heading (Row 0)
+        self.statistics_heading_label = Label(self.statistics_frame,
+                                    text="Game Statistics",
+                                    font="arial 19 bold")
+        self.statistics_heading_label.grid(row=0)
+
+        # To Export [Instructions] (Row 1)
+        self.export_instructions = Label(self.statistics_frame,
+                                    text="Here are your Game Statistics. "
+                                            "Please use the Export button to "
+                                            "access tge results of each "
+                                            "round that you played",
+                                    justify=LEFT, fg="green",
+                                    font="arial 10 italic", wrap=250,
+                                    padx=10, pady=10)
+        self.export_instructions.grid(row=1)
+
+        # Statistics Frame (Row 2)
+        self.details_frame = Frame(self.statistics_frame)
+        self.details_frame.grid(row=2)
+
+        # Starting Balance Heading (Row 0, Column 0)
+        self.starting_balance_label = Label(self.details_frame, text="Starting Balance:",
+                                        font=heading, anchor="e")
+        self.starting_balance_label.grid(row=0, column=0, padx=0)
+
+        # Starting Balance Text (Row 0, Column 1)
+        self.starting_balance_value_label = Label(self.details_frame, font=content,
+                                                    text="${}".format(game_statistics[0]),
+                                                    anchor="w")
+        self.starting_balance_value_label.grid(row=0, column=1, padx=0)
+
+        # Current Balance Heading (Row 1, Column 0)
+        self.current_balance_label = Label(self.details_frame, text="Current Balance:",
+                                            font=heading, anchor="e")
+        self.current_balance_label.grid(row=1, column=0, padx=0)
+
+        # Current Balance Text (Row 1, Column 1)
+        self.current_balance_value_label = Label(self.details_frame, font=content,
+                                                    text="${}".format(game_statistics[1]),
+                                                    anchor="w")
+        self.current_balance_value_label.grid(row=1, column=1, padx=0)
+
+        # To find whether a win or loss has occured
+        if game_statistics[1] > game_statistics[0]:
+            win_or_loss = "Amount Won:"
+            amount = game_statistics[1] - game_statistics[0]
+            win_or_loss_fg = "green"
+        else:
+            win_or_loss = "Amount Lost:"
+            amount = game_statistics[0] - game_statistics[1]
+            win_or_loss_fg = "red"
+
+        # Amount won or lost Heading (Row 2, Column 0)
+        self.win_or_loss_label = Label(self.details_frame, text=win_or_loss,
+                                            font=heading, anchor="e")
+        self.win_or_loss_label.grid(row=2, column=0, padx=0)
+
+        # Amount won or lost Text (Row 2, Column 1)
+        self.win_or_loss_value_label = Label(self.details_frame, font=content,
+                                                    text="${}".format(amount),
+                                                    fg=win_or_loss_fg,
+                                                    anchor="w")
+        self.win_or_loss_value_label.grid(row=2, column=1, padx=0)
+
+        # Rounds Played Heading (Row 3, Column 0)
+        self.games_played_label = Label(self.details_frame, text="Rounds Played:",
+                                            font=heading, anchor="e")
+        self.games_played_label.grid(row=3, column=0, padx=0)
+
+        # Rounds Played Text (Row 3, Column 1)
+        self.games_played_value_label = Label(self.details_frame, font=content,
+                                                    text=len(game_history),
+                                                    anchor="w")
+        self.games_played_value_label.grid(row=3, column=1, padx=0)
+
+        # Dismiss and Export buttons [From "05b_Game_Playable_With_Photos.py"] (Row 3)
+        self.dismiss_export_frame = Frame(self.statistics_frame)
+        self.dismiss_export_frame.grid(row=3, padx=10, pady=10)
+
+        # Dismiss button [From "00_Compiled_Version_2.py"] (Row 0, Column 0)
+        self.dismiss_button = Button(self.dismiss_export_frame, text="Dismiss",
+                                        width =10, bg="pink", font="arial 10 bold",
+                                        command=partial(self.close_statistics, partner))
+        self.dismiss_button.grid(row=0, column=0)
+
+        # Export button (Row 0, Column 1)
+        self.export_button = Button(self.dismiss_export_frame, text="Export",
+                                    font="Arial 15 bold", bg="#464655", fg="#D5CFE1")
+                                    # Lilac Text, Dark Grey Button (From "02_Start_GUI.py")
+        self.export_button.grid(row=0, column=1)
+    
+    # Closes statistics
+    def close_statistics(self, partner):
+
+        # Put statistics button back to normal:
+        partner.statistics_button.config(state=NORMAL)
+        self.statistics_box.destroy()
 
 # From "02_Start_GUI.py"
 # main routine
