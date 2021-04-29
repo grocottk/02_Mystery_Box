@@ -146,17 +146,12 @@ class GameStatistics:
         self.win_or_loss_value_label.grid(row=3, column=1, padx=0)
 
         # Dismiss button [From "00_Compiled_Version_2.py"] (Row 4)
-        self.dismiss_button = Button(self.statistics_frame, text="Dismiss",
+        self.dismiss_button = Button(self.help_frame, text="Dismiss",
                                         width =10, bg="pink", font="arial 10 bold",
-                                        command=partial(self.close_statistics, partner))
+                                        command=partial(self.close_help, partner))
         self.dismiss_button.grid(row=4, pady=10)
 
-    # Closes statistics
-    def close_statistics(self, partner):
 
-        # Put statistics button back to normal:
-        partner.statistics_button.config(state=NORMAL)
-        self.statistics_box.destroy()
 
 # From "02_Start_GUI.py"
 # main routine
