@@ -170,6 +170,7 @@ class Game:
 
         print(stakes)
         print(starting_balance)
+        starting_balance = int(starting_balance)
 
         # Initialise variables
         self.balance = IntVar()
