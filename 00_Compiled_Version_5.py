@@ -553,9 +553,10 @@ class GameStatistics:
                                         command=partial(self.close_statistics, partner))
         self.dismiss_button.grid(row=0, column=0)
 
-        # Export button (Row 0, Column 1)
+        # Export button (Row 0, Column 1) [inspired by "07b_Game_Statistics_GUI_Version_2.py"]
         self.export_button = Button(self.dismiss_export_frame, text="Export",
-                                    font="Arial 15 bold", bg="#464655", fg="#D5CFE1")
+                                    font="Arial 15 bold", bg="#464655", fg="#D5CFE1",
+                                    command=lambda: self.to_export(partner, game_history, all_game_statistics))
                                     # Lilac Text, Dark Grey Button (From "02_Start_GUI.py")
         self.export_button.grid(row=0, column=1)
     
@@ -565,6 +566,10 @@ class GameStatistics:
         # Put statistics button back to normal:
         partner.statistics_button.config(state=NORMAL)
         self.statistics_box.destroy()
+
+    # Sends information to the Export class (inspired by "07b_Game_Statistics_GUI_Version_2.py")
+    def to_export(self, partner, game_history, all_game_statistics):
+        Export(self, partner, game_history, all_game_statistics)
 
 # Beginning of Export class
 class Export:
