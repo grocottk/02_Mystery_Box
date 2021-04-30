@@ -264,6 +264,9 @@ class Game:
                                     # Lilac Text, Dark Grey Button (From "02_Start_GUI.py")
         self.statistics_button.grid(row=0, column=1, padx=2)
 
+        # Disables statistics button at the beginning of the game when little data is present
+        self.statistics_button.config(state=DISABLED)
+
         # Quit button (Row 6)
         self.quit_button = Button(self.game_frame, text="Quit", fg="black",
                                     bg="#F5B700", font="Arial 15 bold", width=20,
@@ -354,7 +357,12 @@ class Game:
                             statistics_prizes[2],
                             5 * stakes_multiplier, round_winnings, current_balance)
         self.round_statistics_list.append(round_summary)
+
+        # Prints round_statistics_list for testing purposes
         print(self.round_statistics_list)
+
+        # Enables statistics button when more data is added to the list
+        self.statistics_button.config(state=NORMAL)
 
         # Edit label so user can see their balance
         self.balance_label.configure(text=balance_statement, fg="#464655") # Dark Grey Text (From "02_Start_GUI.py")
