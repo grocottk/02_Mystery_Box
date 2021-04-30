@@ -2,40 +2,40 @@
 ★★★ Game Statistics ★★★
 
 Starting Balance: $50.00
-Closing Balance: $29.00
-Amount Lost: $21.00
+Closing Balance: $33.00
+Amount Lost: $17.00
 
 ★★★ Round Details ★★★
 
 Copper
+($1.00) | Copper
 ($1.00) | Lead
-($0.00) | Silver
-($2.00) - Cost: $5.00 | Payback: $3.00 | Current Balance: $48.00
-Copper
-($1.00) | Lead
-($0.00) | Copper
-($1.00) - Cost: $5.00 | Payback: $2.00 | Current Balance: $45.00
+($0.00) - Cost: $5.00 | Payback: $2.00 | Current Balance: $47.00
+Silver
+($2.00) | Silver
+($2.00) | Silver
+($2.00) - Cost: $5.00 | Payback: $6.00 | Current Balance: $48.00
 Lead
-($0.00) | Lead
-($0.00) | Lead
-($0.00) - Cost: $5.00 | Payback: $0.00 | Current Balance: $40.00
-Copper
-($1.00) | Lead
 ($0.00) | Copper
-($1.00) - Cost: $5.00 | Payback: $2.00 | Current Balance: $37.00
-Copper
 ($1.00) | Lead
-($0.00) | Lead
-($0.00) - Cost: $5.00 | Payback: $1.00 | Current Balance: $33.00
+($0.00) - Cost: $5.00 | Payback: $1.00 | Current Balance: $44.00
 Lead
 ($0.00) | Silver
 ($2.00) | Copper
-($1.00) - Cost: $5.00 | Payback: $3.00 | Current Balance: $31.00
-Copper
+($1.00) - Cost: $5.00 | Payback: $3.00 | Current Balance: $42.00
+Lead
+($0.00) | Copper
 ($1.00) | Lead
-($0.00) | Lead
-($0.00) - Cost: $5.00 | Payback: $1.00 | Current Balance: $27.00
+($0.00) - Cost: $5.00 | Payback: $1.00 | Current Balance: $38.00
+Lead
+($0.00) | Copper
+($1.00) | Copper
+($1.00) - Cost: $5.00 | Payback: $2.00 | Current Balance: $35.00
+Silver
+($2.00) | Silver
+($2.00) | Copper
+($1.00) - Cost: $5.00 | Payback: $5.00 | Current Balance: $35.00
 Copper
 ($1.00) | Copper
-($1.00) | Gold
-($5.00) - Cost: $5.00 | Payback: $7.00 | Current Balance: $29.00
+($1.00) | Copper
+($1.00) - Cost: $5.00 | Payback: $3.00 | Current Balance: $33.00

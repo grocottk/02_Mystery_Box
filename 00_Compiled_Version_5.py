@@ -561,8 +561,9 @@ class GameStatistics:
 
         # Dismiss button [From "00_Compiled_Version_2.py"] (Row 0, Column 0)
         self.dismiss_button = Button(self.dismiss_export_frame, text="Dismiss",
-                                        width =10, bg="pink", font="arial 10 bold",
+                                        fg="black", bg="#F5B700", font="Arial 15 bold",
                                         command=partial(self.close_statistics, partner))
+                                        # Black Text, Orange Button (From "02_Start_GUI.py")
         self.dismiss_button.grid(row=0, column=0)
 
         # Export button (Row 0, Column 1) [inspired by "07b_Game_Statistics_GUI_Version_2.py"]
@@ -652,20 +653,20 @@ class Export:
         # ... This portion of the code has been inspired by the file
         # ... titled "02c_Converter_GUI_Version_3.py".
 
-        # Save Button (Row 0, Column 0)
-        self.save_button = Button(self.save_cancel_frame,
-                                    text="Save", font="Arial 10 bold",
-                                    bg="pink", width=10,
-                                    command=partial (lambda: self.save_history(partner, game_history, all_game_statistics)))
-        self.save_button.grid(row=0, column=0)
-
-        # Dismiss Button (Row 0, Column 1)
+        # Dismiss Button (Row 0, Column 0)
         self.dismiss_button = Button(self.save_cancel_frame,
-                                    font="Arial 10 bold",
-                                    text="Dismiss",
-                                    command=partial(self.close_export, partner),
-                                    bg="yellow", width=10)
-        self.dismiss_button.grid(row=0, column=1)
+                                    font="Arial 15 bold", fg="black", bg="#F5B700", text="Dismiss",
+                                    command=partial(self.close_export, partner), width=10)
+                                    # Black Text, Orange Button (From "02_Start_GUI.py")
+        self.dismiss_button.grid(row=0, column=0)
+
+        # Save Button (Row 0, Column 1)
+        self.save_button = Button(self.save_cancel_frame,
+                                    text="Save", font="Arial 15 bold",
+                                    bg="green", fg="black", width=10,
+                                    command=partial (lambda: self.save_history(partner, game_history, all_game_statistics)))
+                                    # Black Text, Green Button (From "02_Start_GUI.py" and "00_Compiled_Version_5.py")
+        self.save_button.grid(row=0, column=1)
 
     # Defining "save_history" function (from "12d_History_and_Export_GUI.py")
     def save_history(self, partner, game_history, game_statistics):
