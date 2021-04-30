@@ -2,6 +2,7 @@
 
 from tkinter import *
 import random
+import re
 
 # The following has been done to prevent unwanted windows
 from functools import partial
@@ -170,6 +171,8 @@ class Game:
 
         print(stakes)
         print(starting_balance)
+
+        # Converts the starting balance to an integer
         starting_balance = int(starting_balance)
 
         # Initialise variables
@@ -557,7 +560,7 @@ class GameStatistics:
         # Export button (Row 0, Column 1) [inspired by "07b_Game_Statistics_GUI_Version_2.py"]
         self.export_button = Button(self.dismiss_export_frame, text="Export",
                                     font="Arial 15 bold", bg="#464655", fg="#D5CFE1",
-                                    command=lambda: self.to_export(partner, game_history, all_game_statistics))
+                                    command=lambda: self.to_export(game_history, game_statistics))
                                     # Lilac Text, Dark Grey Button (From "02_Start_GUI.py")
         self.export_button.grid(row=0, column=1)
     
@@ -569,8 +572,8 @@ class GameStatistics:
         self.statistics_box.destroy()
 
     # Sends information to the Export class (inspired by "07b_Game_Statistics_GUI_Version_2.py")
-    def to_export(self, partner, game_history, all_game_statistics):
-        Export(self, partner, game_history, all_game_statistics)
+    def to_export(self, game_history, all_game_statistics):
+        Export(self, game_history, all_game_statistics)
 
 # Beginning of Export class
 class Export:
@@ -590,7 +593,7 @@ class Export:
         self.export_box = Toplevel()
 
         # If users press cross at the top of the window, export closes and the export button 'releases'
-        self.export_box.protocol('WM_DELETE_WINDOW', partial(self.close_statistics, partner))
+        self.export_box.protocol('WM_DELETE_WINDOW', partial(self.close_export, partner))
 
         # Set up GUI Frame
         self.export_frame = Frame(self.export_box, width=300)
@@ -605,7 +608,7 @@ class Export:
 
 
         # Export Instructions (Row 1)
-        self.export_instructions = Label(self.statistics_frame,
+        self.export_instructions = Label(self.export_frame,
                                     text="Enter a file name in the box below "
                                     "and press the Save button to save your"
                                     "calculation history to a text file",
@@ -615,7 +618,7 @@ class Export:
         self.export_instructions.grid(row=1)
 
         # Export Warning (Row 2)
-        self.export_warning = Label(self.statistics_frame,
+        self.export_warning = Label(self.export_frame,
                                     text="if the file name that you enter "
                                     "already exists, its contents will be "
                                     "replaced with your calculation history",
@@ -631,7 +634,7 @@ class Export:
 
         # Error message labels (Row 4) [This is initially blank]
         self.save_error_label = Label(self.export_frame, text="", fg="red")
-        self.save_error_label.grid(row=5, pady=10)
+        self.save_error_label.grid(row=4, pady=10)
 
         # Save/Cancel Button(s) Frame (Row 5) [From "12c_Export_GUI.py"]
         self.save_cancel_frame = Frame(self.export_frame)
@@ -641,13 +644,14 @@ class Export:
         # ... This portion of the code has been inspired by the file
         # ... titled "02c_Converter_GUI_Version_3.py".
 
-        # Save Button
+        # Save Button (Row 0, Column 0)
         self.save_button = Button(self.save_cancel_frame,
                                     text="Save", font="Arial 10 bold",
                                     bg="pink", width=10,
                                     command=partial (lambda: self.save_history(partner, game_history, all_game_statistics)))
         self.save_button.grid(row=0, column=0)
 
+        # Dismiss Button (Row 0, Column 1)
         self.dismiss_button = Button(self.save_cancel_frame,
                                     font="Arial 10 bold",
                                     text="Dismiss",
